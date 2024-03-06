@@ -66,13 +66,14 @@
   <script>
     const showPlayersList = document.querySelector("#showPlayersList");
     const loadingMessage = document.querySelector("#loadingMessage");
+    const selectRole = document.querySelector("#selectRole");
 
     const apiUrl = 'https://players-backend-student-neog-ca.replit.app/players';
 
     function getPlayersData()
     {
       loadingMessage.style.display = 'block';
-
+      showPlayersList.innerHTML = '';
       fetch(apiUrl)
       .then(function(response){
         return response.json();
@@ -81,17 +82,68 @@
         if(data && data.length > 0)
         {
           loadingMessage.style.display = 'none';
+          generateList(data)
+        }
+        else
+        {
+          showPlayersList.innerHTML = `Failed to load player data!`
         }
       })
     }
+
+    
 
     function generateList(data)
       {
         for (let i = 0; i < data.length; i++)
         {
-          const listItem = 
+          const listItem = document.createElement('li');
+          listItem.className = `list-group-item`;
+          listItem.innerHTML = `${data[i].fullName} - Playing Role: ${data[i].playingRole} - Nationality: ${data[i].nationality} <button class="btn btn-danger float-end" player-id="${data[i]._id}" id="deleteBtn">Delete</button>`
+        showPlayersList.appendChild(listItem);
         }
-      }
+      };
+
+    selectRole.addEventListener("change", function(){
+      const selectedRole = selectRole.value;
+
+      fetch(apiUrl)
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(data){
+        if(data && data.length > 0)
+        {
+          if (selectedRole !== 'All-rounder')
+          {
+            let filteredPlayers = [];
+            for (let i = 0; i < data.length; i++)
+              {
+                if (data[i].playingRole === selectedRole){
+                  filteredPlayers.push(data[i]);
+                }
+              }
+            if (filteredPlayers.length > 0){
+            showPlayersList.innerHTML = ``;
+            generateList(filteredPlayers);
+            } else {
+              showPlayersList.innerHTML = `No Data Found!`
+            }
+          }
+          else
+          {
+            showPlayersList.innerHTML = ``;
+            generateList(data);
+          }
+        } else {
+          showPlayersList.innerHTML = `No Data Found!`
+        }
+      })
+    });
+
+    
+  
+  getPlayersData();
   </script>
   
 </body>
