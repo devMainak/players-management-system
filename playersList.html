@@ -26,10 +26,10 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                <a class="nav-link" aria-current="page" href="index.html">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="playersList.html">Players List</a>
+                <a class="nav-link active" href="#">Players List</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
@@ -45,26 +45,53 @@
 
 <main>
   <div class="container">
-    <section class="bg-primary text-center p-5">
-      <h2 class="display-2 mt-5 mb-3" style="color: white;">Welcome to Players Management</h2>
-      <p class="fs-4 mb-5" style="color: white;">Manage cricket player records with this simple management system</p>
-    </section>
-    <section class="text-center py-5">
-      <h5 class="display-5 fw-semibold">Players List</h5>
-      <p class="fs-6 fw-semibold">View and manage players in your system.</p>
-      <a href="playersList.html" class="btn btn-primary">Players List</a>
-    </section>
-    <section class="text-center py-5">
-      <h5 class="display-5 fw-semibold">Manage Players</h5>
-      <p class="fs-6 fw-semibold">Add a new player to the system with their details.</p>
-      <a href="#" class="btn btn-primary">Add Players</a>
-    </section>
+    <h3 class="display-3 fw-semibold py-4">Player List</h3>
+    <div id="loadingMessage" style="display: none;" class="alert alert-success fw-semibold" role="alert">
+      Loading...
+    </div>
+    <div class="mb-3">
+      <label for="" class="form-label">Filter by Playing Role:</label>
+      <div class="input-group">
+        <select id="selectRole" class="form-select">
+          <option value="All-rounder">All-rounder</option>
+          <option value="Batsman">Batsman</option>
+          <option value="Bowler">Bowler</option>
+        </select>
+      </div>
+    </div>
+    <ul id="showPlayersList" class="list-group"></ul>
   </div>
 </main>
 
   <script>
+    const showPlayersList = document.querySelector("#showPlayersList");
+    const loadingMessage = document.querySelector("#loadingMessage");
 
+    const apiUrl = 'https://players-backend-student-neog-ca.replit.app/players';
+
+    function getPlayersData()
+    {
+      loadingMessage.style.display = 'block';
+
+      fetch(apiUrl)
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(data){
+        if(data && data.length > 0)
+        {
+          loadingMessage.style.display = 'none';
+        }
+      })
+    }
+
+    function generateList(data)
+      {
+        for (let i = 0; i < data.length; i++)
+        {
+          const listItem = 
+        }
+      }
   </script>
+  
 </body>
-
-</html>
