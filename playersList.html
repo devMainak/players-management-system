@@ -82,7 +82,8 @@
         if(data && data.length > 0)
         {
           loadingMessage.style.display = 'none';
-          generateList(data)
+          generateList(data);
+          deletePlayers();
         }
         else
         {
@@ -126,6 +127,7 @@
             if (filteredPlayers.length > 0){
             showPlayersList.innerHTML = ``;
             generateList(filteredPlayers);
+            deletePlayers();
             } else {
               showPlayersList.innerHTML = `No Data Found!`
             }
@@ -134,6 +136,7 @@
           {
             showPlayersList.innerHTML = ``;
             generateList(data);
+            deletePlayers();
           }
         } else {
           showPlayersList.innerHTML = `No Data Found!`
@@ -141,7 +144,32 @@
       })
     });
 
-    
+    function deletePlayers(){
+      const deleteButtons = document.querySelectorAll("#deleteBtn");
+      for (let i = 0; i < deleteButtons.length; i++){
+        deleteButtons[i].addEventListener("click", function(event){
+          const playerId = event.target.getAttribute("player-id");
+          const deleteApiUrl = `${apiUrl}/${playerId}`;
+          
+          fetch(deleteApiUrl, {
+            method: "DELETE"
+          })
+          .then(function(response){
+            return response.json()
+          })
+          .then(function(data){
+            if (data)
+            {
+              getPlayersData();
+            }
+            else
+            {
+              showPlayersList.innerHTML = `Failed to delete data reload the page!`
+            }
+          })
+        })
+      }
+    }
   
   getPlayersData();
   </script>
