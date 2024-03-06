@@ -78,7 +78,7 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="playerPhoneNumber" class="form-label">Playing Role:</label>
+        <label for="playerPhoneNumber" class="form-label">Phone Number:</label>
         <div class="input-group">
           <input id="playerPhoneNumber" class="form-control" type="number" required />
         </div>
@@ -125,7 +125,65 @@
       </div>
       <button class="btn btn-primary my-3" type="submit">Add Players</button>
     </form>
+    <div id="successMessage" class="fs-4 fw-semibold" style="color: green;"></div>
   </div>
 </main>
+
+  <script>
+    const addPlayerForm = document.querySelector("#addPlayerForm");
+    const playerName = document.querySelector("#playerName");
+    const playerDOB = document.querySelector("#playerDOB");
+    const playerNationality = document.querySelector("#playerNationality");
+    const playerBirthPlace = document.querySelector("#playerBirthPlace");
+    const playerAddress = document.querySelector("#playerAddress");
+    const playerPhoneNumber = document.querySelector("#playerPhoneNumber");
+    const playerEmail = document.querySelector("#playerEmail");
+    const playerPlayingRole = document.querySelector("#playerPlayingRole");
+    const playerBattingHand = document.querySelector("#playerBattingHand");
+    const playerBowlingStyle = document.querySelector("#playerBowlingStyle");
+    const successMessage = document.querySelector("#successMessage");
+
+    const  apiUrl = 'https://players-backend-student-neog-ca.replit.app/players'
+    
+    addPlayerForm.addEventListener("submit", function(event){
+    event.preventDefault();
+      
+    const playerData = {
+      fullName: playerName.value,
+      nationality: playerNationality.value,
+      playerDateOfBirth: playerDOB.value,
+      placeOfBirth: playerBirthPlace.value,
+      contactAddress: playerAddress.value,
+      phoneNumber: playerPhoneNumber.value,
+      playingRole: playerPlayingRole.value,
+      battingHand: playerBattingHand.value,
+      bowlingStyle: playerBowlingStyle.value
+    }
+  
+    fetch(apiUrl, {
+    method: "POST",
+    body: JSON.stringify(playerData),
+    headers: {
+      "Content-Type" : "application/json"
+    }
+    })
+    .then(function(response){
+      return response.json();
+    })
+    .then(function(data){
+      if (data)
+      {
+        successMessage.textContent = `Successfully player added!`
+      }
+      else
+      {
+        successMessage.textContent = `Failed to add player!`
+      }
+    })
+    .catch(function(error){
+      successMessage.textContent = `An error occured while adding player!`
+    })
+  })
+  </script>
   
 </body>
